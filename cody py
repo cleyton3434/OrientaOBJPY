@@ -1,0 +1,70 @@
+from abc import ABC, abstractmethod
+
+class Contato:
+    def __init__(self, nome, celular):
+        self.nome = nome
+        self.celular = celular
+
+class Mensagem(ABC):
+    def __init__(self, destinatario, remetente, conteudo):
+        self.destinatario = destinatario
+        self.remetente = remetente
+        self.conteudo = conteudo
+
+    @abstractmethod
+    def nova_envio(self):
+        pass
+
+class Texto(Mensagem):
+    def nova_envio(self):
+        return "Nova mensagem de texto enviada."
+
+class WhatsApp:
+    def __init__(self):
+        self.contatos = []
+        self.mensagens = []
+
+    def adicionar_contato(self, contato):
+        self.contatos.append(contato)
+
+    def enviar_mensagem(self, mensagem):
+        if isinstance(mensagem, Mensagem):
+            self.mensagens.append(mensagem)
+            print(mensagem.nova_envio())
+        else:
+            print("Tipo de mensagem não suportado.")
+
+    def listar_contatos(self):
+        print("Lista de Contatos:")
+        for contato in self.contatos:
+            print(f"Nome: {contato.nome}, Celular: {contato.celular}")
+
+    def listar_mensagens(self):
+        print("Lista de Mensagens:")
+        for mensagem in self.mensagens:
+            print(f"Destinatário: {mensagem.destinatario.nome}, Remetente: {mensagem.remetente.nome}, Conteúdo: {mensagem.conteudo}")
+
+# Exemplo de uso
+if __name__ == "__main__":
+    # Criando contatos
+    contato1 = Contato("hilda", "+5585123456789")
+    contato2 = Contato("marcia", "+5585987654321")
+
+    # Criando mensagens
+    mensagem1 = Texto(contato1, contato2, "Oi, tudo bem?")
+    mensagem2 = Texto(contato1, contato2, "Sim, e você?")
+
+    # Criando WhatsApp
+    whatsapp = WhatsApp()
+
+    # Adicionando contatos
+    whatsapp.adicionar_contato(contato1)
+    whatsapp.adicionar_contato(contato2)
+
+    # Enviando mensagens
+    whatsapp.enviar_mensagem(mensagem1)
+    whatsapp.enviar_mensagem(mensagem2)
+
+    # Listando contatos e mensagens
+    whatsapp.listar_contatos()
+    whatsapp.listar_mensagens()
